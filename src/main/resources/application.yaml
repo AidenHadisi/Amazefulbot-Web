@@ -1,0 +1,38 @@
+
+server:
+  port: 5000
+  servlet:
+    context-path: "/api"
+
+spring:
+  session:
+    store-type: mongodb
+  data:
+    mongodb:
+      database: "name"
+      uri: "uri"
+  security:
+    oauth2:
+      client:
+        registration:
+          twitch:
+            Client-ID: id
+            client-secret: secret
+            redirect-uri: "{baseUrl}/auth/callback/twitch"
+            provider: twitch
+            authorization-grant-type: authorization_code
+            client-authentication-method: post
+
+        provider:
+          twitch:
+            token-uri: https://id.twitch.tv/oauth2/token
+            authorization-uri: https://id.twitch.tv/oauth2/authorize
+            user-info-uri: https://id.twitch.tv/oauth2/userinfo
+            user-name-attribute: preferred_username
+
+app:
+  oauth2:
+    authorizedRedirectUris:
+      - http://localhost:5000/auth/callback/twitch
+
+publicAPI: "/v1"
