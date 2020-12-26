@@ -25,7 +25,8 @@ public class Commands {
     private int user_cooldown;
     private List<String> aliases;
     private int role;
-    private int minimum_role;
+    @Field("minimum_role")
+    private int minimumRole;
     private int stream_status;
 
     public String getId() {
@@ -108,12 +109,12 @@ public class Commands {
         this.role = role;
     }
 
-    public int getMinimum_role() {
-        return minimum_role;
+    public int getMinimumRole() {
+        return minimumRole;
     }
 
-    public void setMinimum_role(int minimum_role) {
-        this.minimum_role = minimum_role;
+    public void setMinimumRole(int minimumRole) {
+        this.minimumRole = minimumRole;
     }
 
     public int getStream_status() {
