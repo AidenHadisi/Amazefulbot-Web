@@ -35,12 +35,10 @@ public class ChannelController {
     }
 
     @GetMapping(value = "/config")
-    public ConfigData getConfig(@AuthenticatedUser UserPrincipal principal) {
+    public Channel getConfig(@AuthenticatedUser UserPrincipal principal) {
         var channel = principal.getCurrent_channel();
-        var filters = filtersService.findOrCreateById(channel.getId());
         channel.populateUsers();
-        var editors = channel.getEditors();
-        return new ConfigData(channel, editors, filters);
+        return channel;
     }
 
 
