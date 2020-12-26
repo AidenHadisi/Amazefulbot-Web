@@ -9,7 +9,7 @@ import com.amazefulbot.WebServer.config.UserPrincipal;
 import com.amazefulbot.WebServer.models.Channel;
 import com.amazefulbot.WebServer.models.Filters;
 import com.amazefulbot.WebServer.models.User;
-import com.amazefulbot.WebServer.response.ErrorSuccessResponse;
+import com.amazefulbot.WebServer.response.APISuccessResponse;
 import com.amazefulbot.WebServer.service.ChannelService;
 import com.amazefulbot.WebServer.service.FiltersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,6 @@ public class ChannelController {
     @GetMapping(value = "/config")
     public ConfigData getConfig(@AuthenticatedUser UserPrincipal principal) {
         var channel = principal.getCurrent_channel();
-        if(channel == null)  throw  new ResponseStatusException(HttpStatus.NOT_FOUND, "Channel does not exist");
         var filters = filtersService.findOrCreateById(channel.getId());
         channel.populateUsers();
         var editors = channel.getEditors();
@@ -46,44 +45,25 @@ public class ChannelController {
 
 
     @PostMapping(value = "/prefix", consumes = "application/json", produces = "application/json")
-    public ErrorSuccessResponse setPrefix(@AuthenticatedUser UserPrincipal principal, @RequestBody Map<String, Object> body) {
-        try {
+    public APISuccessResponse setPrefix(@AuthenticatedUser UserPrincipal principal, @RequestBody Map<String, Object> body) {
             var channel = principal.getCurrent_channel();
-
-            var prefix =  body.get("prefix").toString().charAt(0);
-
+            var prefix =  body.get("prefix").toString();
             channelService.updatePrefix(channel, prefix);
-            return new ErrorSuccessResponse("Successfully set prefix to " + prefix, "");
-
-        }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-            return new ErrorSuccessResponse("", "Failed to update prefix.");
-        }
+            return new APISuccessResponse("Successfully set prefix to " + prefix);
     }
 
 
     @PostMapping(value = "/silence", consumes = "application/json", produces = "application/json")
-    public ErrorSuccessResponse setSilenced(@AuthenticatedUser UserPrincipal principal, @RequestBody Map<String, Object> body) {
-        try {
+    public APISuccessResponse setSilenced(@AuthenticatedUser UserPrincipal principal, @RequestBody Map<String, Object> body) {
             var channel = principal.getCurrent_channel();
-
             var sielnced = (boolean) body.get("silenced");
-
             channelService.setSilenced(channel, sielnced);
-            if(sielnced == true) {
-                return new ErrorSuccessResponse("Bot was successfully silenced", "");
+            if(sielnced) {
+                return new APISuccessResponse("Bot was successfully silenced");
             }
             else {
-                return new ErrorSuccessResponse("Bot was successfully unsilenced", "");
-
+                return new APISuccessResponse("Bot was successfully unsilenced");
             }
-
-        }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-            return new ErrorSuccessResponse("", "Failed to update prefix.");
-        }
     }
 
     private class ConfigData {
