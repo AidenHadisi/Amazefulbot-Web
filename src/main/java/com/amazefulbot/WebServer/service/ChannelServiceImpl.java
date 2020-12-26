@@ -7,10 +7,13 @@ package com.amazefulbot.WebServer.service;
 
 import com.amazefulbot.WebServer.models.Channel;
 import com.amazefulbot.WebServer.repository.ChannelRepository;
+import com.amazefulbot.WebServer.validators.Prefix;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 @Service
+@Validated
 public class ChannelServiceImpl implements ChannelService {
     @Autowired
     private ChannelRepository channelRepository;
@@ -27,17 +30,15 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public Channel updatePrefix(Channel channel, char prefix) {
-        if(prefix == '!' || prefix == '$' || prefix == '#' || prefix == '%' || prefix == '^' || prefix == '&' || prefix == '*' || prefix == '?') {
-            channel.setPrefix(prefix);
+    public Channel updatePrefix(Channel channel, @Prefix String prefix) {
+            channel.setPrefix(prefix.charAt(0));
+
             return channelRepository.save(channel);
-        }
-        throw new RuntimeException("Failed to set prefix");
     }
 
     @Override
     public Channel setSilenced(Channel channel, boolean silenced) {
-        if(silenced == true) {
+        if(silenced) {
             channel.setSilenced(true);
         }
         else {
