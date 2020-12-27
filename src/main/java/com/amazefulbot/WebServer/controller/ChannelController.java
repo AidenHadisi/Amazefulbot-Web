@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +35,7 @@ public class ChannelController {
         return channelService.findByChannelId(channelId);
     }
 
-    @GetMapping(value = "/config")
+    @GetMapping(value = "")
     public Channel getConfig(@AuthenticatedUser UserPrincipal principal) {
         var channel = principal.getCurrent_channel();
         channel.populateUsers();
@@ -42,62 +43,33 @@ public class ChannelController {
     }
 
 
+    @PostMapping(value = "", consumes = "application/json", produces = "application/json")
+    public Channel setChannel(@Valid @RequestBody Channel channel) {
+
+        return channelService.updateChannel(channel);
+    }
+
+
     @PostMapping(value = "/prefix", consumes = "application/json", produces = "application/json")
-    public APISuccessResponse setPrefix(@AuthenticatedUser UserPrincipal principal, @RequestBody Map<String, Object> body) {
+    public Channel setPrefix(@AuthenticatedUser UserPrincipal principal, @RequestBody Map<String, Object> body) {
             var channel = principal.getCurrent_channel();
             var prefix =  body.get("prefix").toString();
-            channelService.updatePrefix(channel, prefix);
-            return new APISuccessResponse("Successfully set prefix to " + prefix);
+
+            return channelService.updatePrefix(channel, prefix);
     }
 
 
     @PostMapping(value = "/silence", consumes = "application/json", produces = "application/json")
-    public APISuccessResponse setSilenced(@AuthenticatedUser UserPrincipal principal, @RequestBody Map<String, Object> body) {
+    public String setSilenced(@AuthenticatedUser UserPrincipal principal, @RequestBody Map<String, Object> body) {
             var channel = principal.getCurrent_channel();
             var sielnced = (boolean) body.get("silenced");
             channelService.setSilenced(channel, sielnced);
             if(sielnced) {
-                return new APISuccessResponse("Bot was successfully silenced");
+                return "Bot was successfully silenced";
             }
             else {
-                return new APISuccessResponse("Bot was successfully unsilenced");
+                return "Bot was successfully unsilenced";
             }
-    }
-
-    private class ConfigData {
-        private Channel channel;
-        private List<User> editors;
-        private Filters filters;
-
-        public ConfigData(Channel channel, List<User> editors, Filters filters) {
-            this.channel = channel;
-            this.editors = editors;
-            this.filters = filters;
-        }
-
-        public Channel getChannel() {
-            return channel;
-        }
-
-        public void setChannel(Channel channel) {
-            this.channel = channel;
-        }
-
-        public List<User> getEditors() {
-            return editors;
-        }
-
-        public void setEditors(List<User> editors) {
-            this.editors = editors;
-        }
-
-        public Filters getFilters() {
-            return filters;
-        }
-
-        public void setFilters(Filters filters) {
-            this.filters = filters;
-        }
     }
 
 
