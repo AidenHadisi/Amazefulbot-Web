@@ -18,7 +18,9 @@ import javax.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class CustomAPIException extends ResponseEntityExceptionHandler {
@@ -27,7 +29,12 @@ public class CustomAPIException extends ResponseEntityExceptionHandler {
         Map<String, Object> responseBody = new LinkedHashMap<>();
         responseBody.put("timestamp", new Date());
         responseBody.put("status", status.value());
-        responseBody.put("error",  ex.getMessage());
+        List<String> errors = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(x -> x.getDefaultMessage())
+                .collect(Collectors.toList());
+        responseBody.put("error",  errors.get(0));
         return new ResponseEntity<>(responseBody,headers, status);
     }
 

@@ -4,8 +4,9 @@
 
 package com.amazefulbot.WebServer.service;
 
-import com.amazefulbot.WebServer.models.Commands;
+import com.amazefulbot.WebServer.models.Command;
 
 public interface CommandsService {
-    Commands[] findAllByChannelId(int channelId);
+    Command[] findAllByChannelId(int channelId);
+    Command updateCommand(Command command);
 }
