@@ -4,29 +4,47 @@
 
 package com.amazefulbot.WebServer.models;
 
+import com.amazefulbot.WebServer.validators.ChannelID;
+import com.amazefulbot.WebServer.validators.CommandRole;
+import com.amazefulbot.WebServer.validators.StreamStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import javax.validation.constraints.*;
 import java.util.List;
 
 @Document("commands")
-public class Commands {
+public class Command {
     @Id
     private String id;
+
     @Field(name = "id")
-    @JsonIgnore
+    @ChannelID
+    @Positive
     private int channelId;
+
     private String name;
     private String usage;
     private String description;
     private boolean enabled;
+
+    @Min(value = 1, message = "Cooldown cannot be less than 1.")
+    @Max(value = 200, message = "Cooldown cannot be more than 86400")
     private int cooldown;
+
+    @Min(value = 1, message = "User cooldown cannot be less than 1.")
+    @Max(value = 200, message = "User cooldown cannot be more than 86400")
     private int user_cooldown;
-    private List<String> aliases;
+
+    @CommandRole
     private int role;
     @Field("minimum_role")
+    @CommandRole
     private int minimumRole;
+
+    @StreamStatus
     private int stream_status;
 
     public String getId() {
@@ -93,13 +111,6 @@ public class Commands {
         this.user_cooldown = user_cooldown;
     }
 
-    public List<String> getAliases() {
-        return aliases;
-    }
-
-    public void setAliases(List<String> aliases) {
-        this.aliases = aliases;
-    }
 
     public int getRole() {
         return role;
