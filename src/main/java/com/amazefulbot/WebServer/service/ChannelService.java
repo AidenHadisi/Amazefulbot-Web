@@ -13,5 +13,6 @@ public interface ChannelService {
     Channel findByLogin(String login);
     Channel updatePrefix(Channel channel, @Prefix String prefix);
     Channel setSilenced(Channel channel, boolean silenced);
+    Channel updateChannel(Channel channel);
 
 }

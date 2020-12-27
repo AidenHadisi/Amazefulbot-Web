@@ -47,4 +47,9 @@ public class ChannelServiceImpl implements ChannelService {
         return channelRepository.save(channel);
     }
 
+    @Override
+    public Channel updateChannel(Channel channel) {
+        return channelRepository.save(channel);
+    }
+
 }
