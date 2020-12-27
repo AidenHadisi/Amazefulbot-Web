@@ -5,6 +5,8 @@
 package com.amazefulbot.WebServer.models;
 
 import com.amazefulbot.WebServer.converter.UserReferenceConverter;
+import com.amazefulbot.WebServer.validators.ChannelID;
+import com.amazefulbot.WebServer.validators.Prefix;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -15,6 +17,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,7 +33,8 @@ public class Channel implements Serializable {
     private String objId;
 
     @Indexed(unique = true)
-    @NotEmpty
+    @Positive
+    @ChannelID
     private int id;
 
     @NotEmpty
@@ -40,8 +44,12 @@ public class Channel implements Serializable {
     private String display_name;
 
     private String type;
+
+
     private String broadcaster_type;
+
     private String profile_image_url;
+
     @CreatedDate
     private Date created_at;
 
@@ -53,6 +61,7 @@ public class Channel implements Serializable {
     private boolean join = true;
     private boolean silenced = false;
 
+    @Prefix
     private char prefix;
 
     private boolean suspended = false;
