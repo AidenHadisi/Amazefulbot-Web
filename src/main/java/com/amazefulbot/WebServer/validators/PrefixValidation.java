@@ -9,10 +9,10 @@ import javax.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 import java.util.List;
 
-public class PrefixValidation implements ConstraintValidator<Prefix, String> {
-    private List<String> prefixes = Arrays.asList("%", "#", "$", "%", "^", "&", "*", "?");
+public class PrefixValidation implements ConstraintValidator<Prefix, Character> {
+    private List<Character> prefixes = Arrays.asList('%', '#', '$', '%', '^', '&', '*', '?');
     @Override
-    public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(Character s, ConstraintValidatorContext constraintValidatorContext) {
         return prefixes.contains(s);
     }
 }
