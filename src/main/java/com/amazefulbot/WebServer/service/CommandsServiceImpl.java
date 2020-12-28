@@ -4,7 +4,6 @@
 
 package com.amazefulbot.WebServer.service;
 
-import com.amazefulbot.WebServer.exceptions.EmptyOptionalException;
 import com.amazefulbot.WebServer.models.Command;
 import com.amazefulbot.WebServer.repository.CommandsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.*;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 @Validated
