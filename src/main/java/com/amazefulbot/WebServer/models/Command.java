@@ -30,12 +30,12 @@ public class Command {
     private String description;
     private boolean enabled;
 
-    @Min(value = 1, message = "Cooldown cannot be less than 1.")
-    @Max(value = 200, message = "Cooldown cannot be more than 86400")
+    @Min(value = 1000, message = "Cooldown cannot be less than 1.")
+    @Max(value = 86400000, message = "Cooldown cannot be more than 86400")
     private int cooldown;
 
-    @Min(value = 1, message = "User cooldown cannot be less than 1.")
-    @Max(value = 200, message = "User cooldown cannot be more than 86400")
+    @Min(value = 1000, message = "User cooldown cannot be less than 1.")
+    @Max(value = 86400000, message = "User cooldown cannot be more than 86400")
     private int user_cooldown;
 
     @CommandRole
