@@ -6,8 +6,7 @@ package com.amazefulbot.WebServer.controller;
 
 import com.amazefulbot.WebServer.config.AuthenticatedUser;
 import com.amazefulbot.WebServer.config.UserPrincipal;
-import com.amazefulbot.WebServer.exceptions.EmptyOptionalException;
-import com.amazefulbot.WebServer.models.Command;
+import com.amazefulbot.WebServer.exceptions.CustomException;
 import com.amazefulbot.WebServer.models.CustomCommand;
 import com.amazefulbot.WebServer.service.CustomCommandServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ public class CustomCommandController {
     public CustomCommand setCommand(@Valid @RequestBody CustomCommand command) {
         Optional<CustomCommand> commandOptional = customCommandService.findCommandById(command.getId());
         if(!commandOptional.isPresent()) {
-            throw new EmptyOptionalException("That command no longer exists");
+            throw new CustomException("That command no longer exists");
         }
         var commandFromDB = commandOptional.get();
         commandFromDB.setName(command.getName());
@@ -53,7 +52,7 @@ public class CustomCommandController {
     public CustomCommand enableCommand(@RequestBody Map<String, Object> body) {
         Optional<CustomCommand> commandOptional = customCommandService.findCommandById(body.get("id").toString());
         if(!commandOptional.isPresent()) {
-            throw new EmptyOptionalException("That command no longer exists");
+            throw new CustomException("That command no longer exists");
         }
         CustomCommand command = commandOptional.get();
         return customCommandService.enableCommand(command,(boolean) body.get("enabled"));
