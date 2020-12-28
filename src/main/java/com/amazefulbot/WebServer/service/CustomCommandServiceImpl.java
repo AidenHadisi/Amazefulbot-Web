@@ -39,6 +39,17 @@ public class CustomCommandServiceImpl implements CustomCommandService {
     }
 
     @Override
+    public CustomCommand createCommand(@Valid CustomCommand command) {
+        return customCommandRepository.save(command);
+    }
+
+    @Override
+    public String deleteCommand(@Valid CustomCommand command) {
+        customCommandRepository.delete(command);
+        return command.getId();
+    }
+
+    @Override
     public Optional<CustomCommand> findCommandById(String id) {
         return customCommandRepository.findById(id);
     }

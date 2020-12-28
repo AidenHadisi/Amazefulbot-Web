@@ -9,6 +9,7 @@ import com.amazefulbot.WebServer.validators.CommandAliases;
 import com.amazefulbot.WebServer.validators.CommandRole;
 import com.amazefulbot.WebServer.validators.StreamStatus;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -17,6 +18,7 @@ import java.util.List;
 
 
 @Document("customcommands")
+@CompoundIndex(def = "{'id':1, 'name':1", unique = true)
 public class CustomCommand {
     @Id
     private String id;

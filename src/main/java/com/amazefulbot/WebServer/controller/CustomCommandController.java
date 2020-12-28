@@ -13,11 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("custom")
+
 public class CustomCommandController {
     @Autowired
     private CustomCommandServiceImpl customCommandService;
@@ -48,6 +50,19 @@ public class CustomCommandController {
 
     }
 
+    @PostMapping(value = "/create", consumes = "application/json", produces = "application/json")
+    public CustomCommand createCommand(@AuthenticatedUser UserPrincipal userPrincipal, @RequestBody CustomCommand command) {
+        command.setChannelId(userPrincipal.getCurrent_channel().getId());
+        System.out.println(command.getChannelId());
+        try {
+            return customCommandService.createCommand(command);
+        }
+        catch(org.springframework.dao.DuplicateKeyException e){
+            throw new CustomException("Command " + command.getName() +" already exists");
+        }
+
+    }
+
     @PostMapping(value = "/enable", consumes = "application/json", produces = "application/json")
     public CustomCommand enableCommand(@RequestBody Map<String, Object> body) {
         Optional<CustomCommand> commandOptional = customCommandService.findCommandById(body.get("id").toString());
@@ -56,5 +71,18 @@ public class CustomCommandController {
         }
         CustomCommand command = commandOptional.get();
         return customCommandService.enableCommand(command,(boolean) body.get("enabled"));
+    }
+
+    @DeleteMapping(value = "/delete")
+    public Map<String, Object> deleteCommand(@RequestParam String id) {
+        Optional<CustomCommand> commandOptional = customCommandService.findCommandById(id);
+        if(!commandOptional.isPresent()) {
+            throw new CustomException("That command no longer exists");
+        }
+        CustomCommand command = commandOptional.get();
+        var deletedId = customCommandService.deleteCommand(command);
+        var map = new HashMap<String, Object>();
+        map.put("deleted", deletedId);
+        return map;
     }
 }

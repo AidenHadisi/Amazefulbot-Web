@@ -13,5 +13,7 @@ public interface CustomCommandService {
     CustomCommand[] findAllByChannelId(int channelId);
     CustomCommand enableCommand(@Valid CustomCommand command, boolean value);
     CustomCommand updateCommand(CustomCommand command);
+    CustomCommand createCommand(@Valid CustomCommand command);
+    String deleteCommand(@Valid CustomCommand command);
     Optional<CustomCommand> findCommandById(String id);
 }
