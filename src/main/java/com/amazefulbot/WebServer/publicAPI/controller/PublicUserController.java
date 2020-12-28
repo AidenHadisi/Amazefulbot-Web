@@ -2,10 +2,9 @@ package com.amazefulbot.WebServer.publicAPI.controller;
 
 import com.amazefulbot.WebServer.config.PublicAPI;
 import com.amazefulbot.WebServer.publicAPI.models.User;
-import com.amazefulbot.WebServer.publicAPI.service.UserService;
+import com.amazefulbot.WebServer.publicAPI.service.PublicUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/user")
 public class PublicUserController {
     @Autowired
-    private UserService userService;
+    private PublicUserService userService;
 
     @GetMapping( params = {"id"})
     public User getById(@RequestParam("id") int userId) {

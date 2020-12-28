@@ -4,7 +4,7 @@ import com.amazefulbot.WebServer.publicAPI.models.User;
 
 import java.util.Optional;
 
-public interface UserService {
+public interface PublicUserService {
     User getById(int userId);
     User getByLogin(String login);
 }
