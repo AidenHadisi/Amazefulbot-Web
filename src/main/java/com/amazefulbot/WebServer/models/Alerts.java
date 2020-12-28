@@ -4,34 +4,42 @@
 
 package com.amazefulbot.WebServer.models;
 
+import com.amazefulbot.WebServer.validators.ChannelID;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Document("alerts")
 public class Alerts {
     @Id
-    private String _id;
-    private int id;
+    private String id;
+
+    @Field("id")
+    @ChannelID
+    private int channelId;
 
     private Sub sub;
     private Resub resub;
     private SubGift subGift;
     private CommunityGift communityGift;
 
-    public String get_id() {
-        return _id;
-    }
-
-    public void set_id(String _id) {
-        this._id = _id;
-    }
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public int getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(int channelId) {
+        this.channelId = channelId;
     }
 
     public Sub getSub() {
@@ -67,8 +75,14 @@ public class Alerts {
     }
 
     private class Sub {
+
         private boolean enabled =false;
+        @NotEmpty
+        @Size(min = 1, max = 400, message = "Alert message must be between 1 and 400 characters long")
         private String message = "@$(user), Thank you for $(tier) subscription.";
+
+        public Sub() {
+        }
 
         public boolean isEnabled() {
             return enabled;
@@ -89,7 +103,12 @@ public class Alerts {
 
     private class Resub {
         private boolean enabled =false;
+
+        @Size(min = 1, max = 400, message = "Alert message must be between 1 and 400 characters long")
         private String message = "@$(user), Thank you for subscribing for $(months) months in a row.";
+
+        public Resub() {
+        }
 
         public boolean isEnabled() {
             return enabled;
@@ -110,6 +129,12 @@ public class Alerts {
 
     private class SubGift {
         private boolean enabled =false;
+
+        public SubGift() {
+        }
+
+        @Size(min = 1, max = 400, message = "Alert message must be between 1 and 400 characters long")
+
         private String message = "@$(gifter), Thank you for gifting a $(tier) subscription to $(user).";
 
         public boolean isEnabled() {
@@ -132,7 +157,12 @@ public class Alerts {
 
     private class CommunityGift {
         private boolean enabled =false;
+        @Size(min = 1, max = 400, message = "Alert message must be between 1 and 400 characters long")
+
         private String message = "@$(gifter), Thank you for gifting $(count) tier $(tier) subs to $(channel)'s community.";
+
+        public CommunityGift() {
+        }
 
         public boolean isEnabled() {
             return enabled;

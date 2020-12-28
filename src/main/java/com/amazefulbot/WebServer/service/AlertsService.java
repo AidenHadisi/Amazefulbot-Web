@@ -7,5 +7,6 @@ package com.amazefulbot.WebServer.service;
 import com.amazefulbot.WebServer.models.Alerts;
 
 public interface AlertsService {
-    Alerts findOrCreateById(int id);
+    Alerts findOrCreateByChannel(int channelId);
+    Alerts updateAlerts(Alerts alerts);
 }

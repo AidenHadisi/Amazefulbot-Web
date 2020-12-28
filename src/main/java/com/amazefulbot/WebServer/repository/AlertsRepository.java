@@ -12,5 +12,5 @@ import java.util.Optional;
 
 @Repository
 public interface AlertsRepository extends MongoRepository<Alerts, String> {
-    Optional<Alerts> findById(int id);
+    Optional<Alerts> findByChannelId(int channelId);
 }

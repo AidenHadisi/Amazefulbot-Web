@@ -9,9 +9,9 @@ import com.amazefulbot.WebServer.config.UserPrincipal;
 import com.amazefulbot.WebServer.models.Alerts;
 import com.amazefulbot.WebServer.service.AlertsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/alerts")
@@ -19,9 +19,13 @@ public class AlertsController {
     @Autowired
     private AlertsService alertsService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public Alerts findById(@AuthenticatedUser UserPrincipal principal) {
-        var channel = principal.getCurrent_channel();
-        return alertsService.findOrCreateById(channel.getId());
+        return alertsService.findOrCreateByChannel(principal.getCurrent_channel().getId());
+    }
+
+    @PostMapping(value = "", consumes = "application/json", produces = "application/json")
+    public Alerts setAlert(@Valid @RequestBody Alerts alerts) {
+        return alertsService.updateAlerts(alerts);
     }
 }

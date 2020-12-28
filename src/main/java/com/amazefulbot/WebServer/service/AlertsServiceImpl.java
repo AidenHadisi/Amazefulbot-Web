@@ -15,8 +15,8 @@ public class AlertsServiceImpl implements AlertsService {
     private AlertsRepository alertsRepository;
 
     @Override
-    public Alerts findOrCreateById(int id) {
-        var alertsOptional = alertsRepository.findById(id);
+    public Alerts findOrCreateByChannel(int channelId) {
+        var alertsOptional = alertsRepository.findByChannelId(channelId);
         Alerts alerts;
         if(alertsOptional.isPresent()) {
             alerts = alertsOptional.get();
@@ -24,9 +24,14 @@ public class AlertsServiceImpl implements AlertsService {
         }
         else {
             alerts = new Alerts();
-            alerts.setId(id);
+            alerts.setChannelId(channelId);
             alertsRepository.save(alerts);
         }
         return alerts;
+    }
+
+    @Override
+    public Alerts updateAlerts(Alerts alerts) {
+        return alertsRepository.save(alerts);
     }
 }
