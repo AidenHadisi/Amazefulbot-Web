@@ -4,45 +4,74 @@
 
 package com.amazefulbot.WebServer.models;
 
+import com.amazefulbot.WebServer.validators.ChannelID;
+import com.amazefulbot.WebServer.validators.CommandAliases;
+import com.amazefulbot.WebServer.validators.CommandRole;
+import com.amazefulbot.WebServer.validators.StreamStatus;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
+import javax.validation.constraints.*;
 import java.util.List;
 
 
 @Document("customcommands")
 public class CustomCommand {
     @Id
-    private String _id;
-    private int id;
+    private String id;
+
+    @ChannelID
+    @Field("id")
+    private int channelId;
+
+    @NotEmpty
+    @Size(min = 1, max = 50, message = "Command name must be between 1 and 50 characters long")
+    @Pattern(regexp = "^[^\\s]+$", message = "Command name cannot contain whitespaces")
     private String name;
+
     private boolean custom = true;
     private boolean enabled = true;
+
+    @Min(value = 1000, message = "Cooldown cannot be less than 1.")
+    @Max(value = 86400000, message = "Cooldown cannot be more than 86400")
     private int cooldown = 5000;
+    @Min(value = 1000, message = "User cooldown cannot be less than 1.")
+    @Max(value = 86400000, message = "User cooldown cannot be more than 86400")
     private int user_cooldown = 15000;
+
+
+    @CommandAliases
     private List<String> aliases;
+
+    @CommandRole
     private int role = 100;
+
+    @StreamStatus
     private int stream_status = 200;
+
+
+    @Size(min = 1, max = 2000, message = "Command response must be between 1 and 2000 characters long")
     private String response;
     private boolean has_vars = false;
     private int count = 0;
     private Timers timers;
 
 
-    public String get_id() {
-        return _id;
-    }
-
-    public void set_id(String _id) {
-        this._id = _id;
-    }
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public int getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(int channelId) {
+        this.channelId = channelId;
     }
 
     public String getName() {
@@ -143,9 +172,19 @@ public class CustomCommand {
 
     private class Timers {
         private boolean enabled = false;
+        @Min(value = 1, message = "Timer message count must be between 1 and 100")
+        @Max(value = 100, message = "Timer message count must be between 1 and 100")
         private int min_count = 10;
+
+        @Min(value = 60000, message = "Timer interval must be between 1 and 1440 minutes")
+        @Max(value = 86400000, message = "Timer interval must be between 1 and 1440 minutes")
         private int interval = 180000;
+
+        @StreamStatus
         private int stream_status = 200;
+
+        public Timers() {
+        }
 
         public boolean isEnabled() {
             return enabled;

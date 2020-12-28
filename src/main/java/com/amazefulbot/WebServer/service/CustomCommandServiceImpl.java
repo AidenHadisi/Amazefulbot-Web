@@ -8,8 +8,13 @@ import com.amazefulbot.WebServer.models.CustomCommand;
 import com.amazefulbot.WebServer.repository.CustomCommandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.Valid;
+import java.util.Optional;
 
 @Service
+@Validated
 public class CustomCommandServiceImpl implements CustomCommandService {
 
     @Autowired
@@ -17,7 +22,25 @@ public class CustomCommandServiceImpl implements CustomCommandService {
 
 
     @Override
-    public CustomCommand[] findAllById(int id) {
-        return customCommandRepository.findAllById(id);
+    public CustomCommand[] findAllByChannelId(int channelId) {
+        return customCommandRepository.findAllByChannelId(channelId);
     }
+
+
+    @Override
+    public CustomCommand enableCommand(@Valid CustomCommand command, boolean value) {
+        command.setEnabled(value);
+        return customCommandRepository.save(command);
+    }
+
+    @Override
+    public CustomCommand updateCommand(CustomCommand command) {
+        return customCommandRepository.save(command);
+    }
+
+    @Override
+    public Optional<CustomCommand> findCommandById(String id) {
+        return customCommandRepository.findById(id);
+    }
+
 }

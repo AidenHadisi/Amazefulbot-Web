@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CustomCommandRepository extends MongoRepository<CustomCommand, String> {
-    CustomCommand[] findAllById(int id);
+    CustomCommand[] findAllByChannelId(int channelId);
 }

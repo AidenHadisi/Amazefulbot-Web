@@ -6,6 +6,12 @@ package com.amazefulbot.WebServer.service;
 
 import com.amazefulbot.WebServer.models.CustomCommand;
 
+import javax.validation.Valid;
+import java.util.Optional;
+
 public interface CustomCommandService {
-    CustomCommand[] findAllById(int id);
+    CustomCommand[] findAllByChannelId(int channelId);
+    CustomCommand enableCommand(@Valid CustomCommand command, boolean value);
+    CustomCommand updateCommand(CustomCommand command);
+    Optional<CustomCommand> findCommandById(String id);
 }
