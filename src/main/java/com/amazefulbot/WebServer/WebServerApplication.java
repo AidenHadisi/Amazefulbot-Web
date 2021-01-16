@@ -4,6 +4,7 @@
 
 package com.amazefulbot.WebServer;
 
+import com.amazefulbot.WebServer.config.AppProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -12,6 +13,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 @SpringBootApplication
 @EnableMongoAuditing
+@EnableConfigurationProperties(AppProperties.class)
 public class WebServerApplication {
 
 	public static void main(String[] args) {
