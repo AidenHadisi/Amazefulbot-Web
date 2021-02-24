@@ -6,9 +6,12 @@ package com.amazefulbot.WebServer.models;
 
 import com.amazefulbot.WebServer.validators.ChannelID;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
@@ -19,11 +22,15 @@ public class Alerts {
 
     @Field("id")
     @ChannelID
+    @Indexed(unique = true)
     private int channelId;
-
+    @Valid
     private Sub sub;
+    @Valid
     private Resub resub;
+    @Valid
     private SubGift subGift;
+    @Valid
     private CommunityGift communityGift;
 
     public String getId() {
@@ -104,6 +111,7 @@ public class Alerts {
     private class Resub {
         private boolean enabled =false;
 
+        @NotEmpty
         @Size(min = 1, max = 400, message = "Alert message must be between 1 and 400 characters long")
         private String message = "@$(user), Thank you for subscribing for $(months) months in a row.";
 
@@ -133,8 +141,8 @@ public class Alerts {
         public SubGift() {
         }
 
+        @NotEmpty
         @Size(min = 1, max = 400, message = "Alert message must be between 1 and 400 characters long")
-
         private String message = "@$(gifter), Thank you for gifting a $(tier) subscription to $(user).";
 
         public boolean isEnabled() {
@@ -157,8 +165,8 @@ public class Alerts {
 
     private class CommunityGift {
         private boolean enabled =false;
+        @NotEmpty
         @Size(min = 1, max = 400, message = "Alert message must be between 1 and 400 characters long")
-
         private String message = "@$(gifter), Thank you for gifting $(count) tier $(tier) subs to $(channel)'s community.";
 
         public CommunityGift() {

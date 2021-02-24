@@ -22,7 +22,6 @@ public class Command {
 
     @Field(name = "id")
     @ChannelID
-    @Positive
     private int channelId;
 
     private String name;

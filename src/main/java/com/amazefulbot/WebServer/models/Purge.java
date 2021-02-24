@@ -4,76 +4,38 @@
 
 package com.amazefulbot.WebServer.models;
 
+import com.amazefulbot.WebServer.validators.ChannelID;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 @Document("purges")
 public class Purge {
     @Id
-    private String _id;
+    private String id;
 
-    private int id;
+    @ChannelID
+    @Field("id")
+    private int channelId;
+
+
     private boolean enabled = false;
+
+    @Min(value = 30000, message = "Lookback time cannot be less than 30 seconds")
+    @Max(value = 300000, message = "Loockback time cannot be over 300 seconds")
     private int max_lookback_time = 180000;
+
     private boolean continuous_timeout = true;
+
+    @Min(value = 10000, message = "Retention time cannot be less than 10 seconds")
+    @Max(value = 600000, message = "Retention time cannot be over 600 seconds")
     private int continuous_time = 60000;
     private Exempt exempt;
 
-    public String get_id() {
-        return _id;
-    }
 
-    public void set_id(String _id) {
-        this._id = _id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public int getMax_lookback_time() {
-        return max_lookback_time;
-    }
-
-    public void setMax_lookback_time(int max_lookback_time) {
-        this.max_lookback_time = max_lookback_time;
-    }
-
-    public boolean isContinuous_timeout() {
-        return continuous_timeout;
-    }
-
-    public void setContinuous_timeout(boolean continuous_timeout) {
-        this.continuous_timeout = continuous_timeout;
-    }
-
-    public int getContinuous_time() {
-        return continuous_time;
-    }
-
-    public void setContinuous_time(int continuous_time) {
-        this.continuous_time = continuous_time;
-    }
-
-    public Exempt getExempt() {
-        return exempt;
-    }
-
-    public void setExempt(Exempt exempt) {
-        this.exempt = exempt;
-    }
 
     private class Exempt {
         private boolean subscriber = false;

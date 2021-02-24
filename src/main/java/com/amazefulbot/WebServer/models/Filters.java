@@ -4,56 +4,97 @@
 
 package com.amazefulbot.WebServer.models;
 
+import com.amazefulbot.WebServer.validators.ChannelID;
+import com.amazefulbot.WebServer.validators.StreamStatus;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Document("filters")
 //@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Filters {
     @Id
-    private String _id;
+    private String id;
 
     @Indexed(unique = true)
-    private int id;
+    @Field("id")
+    @ChannelID
+    private int channelId;
+
+
+    @Min(value = 5, message = "Raid viewer count must be between 1 and 100000")
+    @Max(value = 100000, message = "Raid viewer count must be between 1 and 100000")
     private int raid_count = 30;
+
+
+    @Min(value = 30, message = "Raid timeout must be between 30 and 1800 seconds")
+    @Max(value = 1800000, message = "Raid timeout must be between 30 and 1800 seconds")
     private int raid_timeout = 60000;
+
+    @Valid
     private Caps caps;
+
+    @Valid
     private Symbols symbols;
+
+    @Valid
     private Length length;
+
+    @Valid
     private Zalgo zalgo;
+
+    @Valid
     private Emotes emotes;
+
+    @Valid
     private Emojis emojis;
+
+    @Valid
     private Repetition repetition;
+
+    @Valid
     private SoloSpam solo_spam;
+
+    @Valid
     private Link link;
+
+    @Valid
     private English english;
 
-    public Filters() {
-    }
 
-
-
-    public String get_id() {
-        return _id;
-    }
-
-    public void set_id(String _id) {
-        this._id = _id;
-    }
 
     private class Caps {
         private boolean enabled = false;
         private String description = "Timeout users for using excessive CAPS.";
+
+        @Min(value = 1, message = "Minimum characters must be between 1 and 500")
+        @Max(value = 500, message = "Minimum characters must be between 1 and 500")
         private int min_chars = 50;
+
+        @Min(value = 0)
+        @Max(value = 500)
         private int max_caps = 100;
+
+        @Min(value = 0)
+        @Max(value = 1)
         private double max_percentage = 0.9;
+
+        @StreamStatus
         private int stream_status = 200;
         private boolean raid = false;
         private boolean announce = true;
+
+
         private int announce_cooldown = 60000;
+
+        @NotEmpty(message = "Announcement message cannot be empty")
         private String message = "Please stop spamming caps.";
         private int timeout_duration = 30;
         private boolean exponential = true;
@@ -1432,12 +1473,20 @@ public class Filters {
     }
 
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public int getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(int channelId) {
+        this.channelId = channelId;
     }
 
     public int getRaid_count() {

@@ -17,16 +17,17 @@ public class PurgeServiceImpl implements PurgeService {
 
     @Override
     public Purge findOrCreateById(int id) {
-            var purgeOptional = purgeRepository.findById(id);
-            Purge purge;
-            if(purgeOptional.isPresent()) {
-                purge = purgeOptional.get();
-            }
-            else {
-                purge = new Purge();
-                purge.setId(id);
-                purgeRepository.save(purge);
-            }
-            return purge;
+//            var purgeOptional = purgeRepository.findById(id);
+//            Purge purge;
+//            if(purgeOptional.isPresent()) {
+//                purge = purgeOptional.get();
+//            }
+//            else {
+//                purge = new Purge();
+//                purge.(id);
+//                purgeRepository.save(purge);
+//            }
+//            return purge;
+        return new Purge();
     }
 }

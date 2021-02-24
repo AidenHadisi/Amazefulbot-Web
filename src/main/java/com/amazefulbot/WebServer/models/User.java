@@ -31,7 +31,6 @@ public class User implements Serializable {
     private String objId;
 
     @Indexed(unique = true)
-    @NotEmpty
     private int id;
 
     @NotEmpty

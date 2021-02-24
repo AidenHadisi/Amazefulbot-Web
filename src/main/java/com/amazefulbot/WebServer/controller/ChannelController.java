@@ -7,18 +7,12 @@ package com.amazefulbot.WebServer.controller;
 import com.amazefulbot.WebServer.config.AuthenticatedUser;
 import com.amazefulbot.WebServer.config.UserPrincipal;
 import com.amazefulbot.WebServer.models.Channel;
-import com.amazefulbot.WebServer.models.Filters;
-import com.amazefulbot.WebServer.models.User;
-import com.amazefulbot.WebServer.response.APISuccessResponse;
 import com.amazefulbot.WebServer.service.ChannelService;
 import com.amazefulbot.WebServer.service.FiltersService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -50,26 +44,32 @@ public class ChannelController {
     }
 
 
-    @PostMapping(value = "/prefix", consumes = "application/json", produces = "application/json")
+    @PutMapping(value = "/prefix", consumes = "application/json", produces = "application/json")
     public Channel setPrefix(@AuthenticatedUser UserPrincipal principal, @RequestBody Map<String, Object> body) {
-            var channel = principal.getCurrent_channel();
-            var prefix =  body.get("prefix").toString();
-
-            return channelService.updatePrefix(channel, prefix);
+            return channelService.updatePrefix(principal.getCurrent_channel(), body.get("prefix").toString().charAt(0));
     }
 
 
     @PostMapping(value = "/silence", consumes = "application/json", produces = "application/json")
-    public String setSilenced(@AuthenticatedUser UserPrincipal principal, @RequestBody Map<String, Object> body) {
+    public Channel setSilenced(@AuthenticatedUser UserPrincipal principal, @RequestBody Map<String, Object> body) {
             var channel = principal.getCurrent_channel();
             var sielnced = (boolean) body.get("silenced");
-            channelService.setSilenced(channel, sielnced);
-            if(sielnced) {
-                return "Bot was successfully silenced";
-            }
-            else {
-                return "Bot was successfully unsilenced";
-            }
+            return channelService.setSilenced(channel, sielnced);
+
+    }
+
+    @PostMapping(value = "/join", consumes = "application/json", produces = "application/json")
+    public Channel joinChannel(@AuthenticatedUser UserPrincipal principal) {
+        var channel = principal.getCurrent_channel();
+        return channelService.joinChannel(channel);
+
+    }
+
+    @PostMapping(value = "/part", consumes = "application/json", produces = "application/json")
+    public Channel partChannel(@AuthenticatedUser UserPrincipal principal) {
+        var channel = principal.getCurrent_channel();
+        return channelService.partChannel(channel);
+
     }
 
 

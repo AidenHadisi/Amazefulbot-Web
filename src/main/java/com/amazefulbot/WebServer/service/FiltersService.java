@@ -7,5 +7,5 @@ package com.amazefulbot.WebServer.service;
 import com.amazefulbot.WebServer.models.Filters;
 
 public interface FiltersService {
-    Filters findOrCreateById(int id);
+
 }

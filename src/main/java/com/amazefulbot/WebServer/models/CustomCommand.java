@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 
@@ -57,6 +58,8 @@ public class CustomCommand {
     private String response;
     private boolean has_vars = false;
     private int count = 0;
+
+    @Valid
     private Timers timers;
 
 

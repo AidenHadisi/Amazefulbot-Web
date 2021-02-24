@@ -4,38 +4,42 @@
 
 package com.amazefulbot.WebServer.models;
 
+import com.amazefulbot.WebServer.validators.ChannelID;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import javax.validation.constraints.Positive;
 import java.util.Date;
 import java.util.List;
 
 @Document("moderation")
 public class Moderation {
     @Id
-    private String _id;
-    private int id;
+    private String id;
+
+    @Field("id")
+    private int channelId;
     private String action;
     private Date date;
     @Field("mod_name")
     private String modName;
     private List<String> args;
 
-    public String get_id() {
-        return _id;
-    }
-
-    public void set_id(String _id) {
-        this._id = _id;
-    }
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public int getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(int channelId) {
+        this.channelId = channelId;
     }
 
     public String getAction() {

@@ -21,4 +21,11 @@ public class TwitchOAuth2UserInfo {
         return (String) this.attributes.get("aud");
     }
 
+    public Map<String, Object> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(Map<String, Object> attributes) {
+        this.attributes = attributes;
+    }
 }

@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PrefixValidation implements ConstraintValidator<Prefix, Character> {
-    private List<Character> prefixes = Arrays.asList('%', '#', '$', '%', '^', '&', '*', '?');
+    private List<Character> prefixes = Arrays.asList( '%', '#', '$', '%', '^', '&', '*', '?');
     @Override
     public boolean isValid(Character s, ConstraintValidatorContext constraintValidatorContext) {
         return prefixes.contains(s);

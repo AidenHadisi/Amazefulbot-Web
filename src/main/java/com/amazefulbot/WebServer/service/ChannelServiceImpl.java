@@ -6,11 +6,15 @@ package com.amazefulbot.WebServer.service;
 
 
 import com.amazefulbot.WebServer.models.Channel;
+import com.amazefulbot.WebServer.models.Command;
 import com.amazefulbot.WebServer.repository.ChannelRepository;
 import com.amazefulbot.WebServer.validators.Prefix;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+
+import javax.validation.*;
+import java.util.Set;
 
 @Service
 @Validated
@@ -30,9 +34,8 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public Channel updatePrefix(Channel channel, @Prefix String prefix) {
-            channel.setPrefix(prefix.charAt(0));
-
+    public Channel updatePrefix(Channel channel, @Prefix char prefix) {
+            channel.setPrefix(prefix);
             return channelRepository.save(channel);
     }
 
@@ -51,5 +54,19 @@ public class ChannelServiceImpl implements ChannelService {
     public Channel updateChannel(Channel channel) {
         return channelRepository.save(channel);
     }
+
+    @Override
+    public Channel joinChannel(Channel channel) {
+        channel.setJoin(true);
+        return channelRepository.save(channel);
+    }
+
+    @Override
+    public Channel partChannel(Channel channel) {
+        channel.setJoin(false);
+        return channelRepository.save(channel);
+    }
+
+
 
 }

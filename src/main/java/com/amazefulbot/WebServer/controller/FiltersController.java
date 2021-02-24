@@ -19,9 +19,5 @@ public class FiltersController {
     @Autowired
     private FiltersService filtersService;
 
-    @GetMapping(value = "/")
-    public Filters getFilters(@AuthenticatedUser UserPrincipal principal) {
-        var channel = principal.getCurrent_channel();
-        return filtersService.findOrCreateById(channel.getId());
-    }
+
 }
